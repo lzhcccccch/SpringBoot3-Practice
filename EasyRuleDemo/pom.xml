@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.lzhch.practice</groupId>
+        <artifactId>SpringBoot3-Practice</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>EasyRuleDemo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>EasyRuleDemo</name>
+    <description>基于EasyRule的Demo</description>
+
+    <properties>
+        <version-easy-rule>4.1.0</version-easy-rule>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jeasy/easy-rules-core -->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-rules-core</artifactId>
+            <version>${version-easy-rule}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jeasy/easy-rules-support -->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-rules-support</artifactId>
+            <version>${version-easy-rule}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jeasy/easy-rules-mvel -->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-rules-mvel</artifactId>
+            <version>${version-easy-rule}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
