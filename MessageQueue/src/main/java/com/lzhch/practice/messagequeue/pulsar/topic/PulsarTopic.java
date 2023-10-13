@@ -10,6 +10,9 @@ package com.lzhch.practice.messagequeue.pulsar.topic;
 
 public class PulsarTopic {
 
+    private PulsarTopic() {
+    }
+
     public static final String PULSAR_TOPIC = "persistent://tenant/namespace/topic";
 
 }
