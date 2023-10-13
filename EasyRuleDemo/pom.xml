@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>EasyRuleDemo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>EasyRuleDemo</name>
     <description>基于EasyRule的Demo</description>
 

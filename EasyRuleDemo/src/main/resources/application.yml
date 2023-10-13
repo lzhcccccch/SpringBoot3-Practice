@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: easy-rule
+
+server:
+  port: 8088
+
+
