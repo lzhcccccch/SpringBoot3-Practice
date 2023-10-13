@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+
+pulsar:
+  issuerUrl: https://oauth2.hdt.cosmoplat.com
+  clusterUrl: pulsar://pulsartest.cosmoplat.com:6650
+  maxRedeliverCount: 3
