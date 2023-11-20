@@ -9,16 +9,23 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>MessageQueue</module>
+        <module>EasyRuleDemo</module>
+        <module>ParamGroupValidated</module>
+    </modules>
+
 
     <!-- 指定JDK版本 解决报错: Java：不支持发行版本5 的解决方案 -->
     <properties>
-        <maven.compiler.source>20</maven.compiler.source>
-        <maven.compiler.target>20</maven.compiler.target>
-        <version-spring-boot-dependencies>3.1.2</version-spring-boot-dependencies>
-        <version-spring-boot-admin-dependencies>3.1.3</version-spring-boot-admin-dependencies>
-        <version-lombok>1.18.28</version-lombok>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <version-spring-boot-dependencies>3.1.5</version-spring-boot-dependencies>
+        <version-spring-boot-admin-dependencies>3.1.8</version-spring-boot-admin-dependencies>
+        <version-lombok>1.18.30</version-lombok>
         <version-snakeyaml>2.0</version-snakeyaml>
-        <version-fastjson2>2.0.37</version-fastjson2>
+        <version-fastjson2>2.0.42</version-fastjson2>
+        <version-hutool>5.8.23</version-hutool>
     </properties>
 
     <dependencies>
@@ -32,6 +39,13 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${version-fastjson2}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${version-hutool}</version>
+            <scope>import</scope>
         </dependency>
     </dependencies>
 
@@ -78,6 +92,15 @@
                 <version>${version-fastjson2}</version>
                 <scope>import</scope>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${version-hutool}</version>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
