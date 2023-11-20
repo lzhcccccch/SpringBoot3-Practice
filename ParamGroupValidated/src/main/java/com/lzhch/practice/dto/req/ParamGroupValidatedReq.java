@@ -32,7 +32,8 @@ public class ParamGroupValidatedReq implements Serializable {
      * 内部定义接口和统一定义接口任选其一即可
      */
     @NotNull(message = "用户id不能为空", groups = CreateParamValidated.class)
-    @NotNull(message = "用户id不能为空", groups = ParamGroupValidatedReq.Save.class)
+    // @NotNull(message = "用户id不能为空") // Service 层不进行分组校验
+    // @NotNull(message = "用户id不能为空", groups = ParamGroupValidatedReq.Save.class)
     private Long userId;
 
     /**

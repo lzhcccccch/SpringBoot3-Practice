@@ -2,8 +2,10 @@ package com.lzhch.practice.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.lzhch.practice.dto.req.ParamGroupValidatedReq;
+import com.lzhch.practice.service.IParamGroupValidatedService;
 import com.lzhch.practice.validatedtype.CreateParamValidated;
 import com.lzhch.practice.validatedtype.UpdateParamValidated;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "validated/paramGroup")
 public class ParamGroupValidatedController {
 
+    @Resource
+    private IParamGroupValidatedService paramGroupValidatedService;
+
     @PostMapping(value = "create")
     public void create(@RequestBody @Validated(value = CreateParamValidated.class) ParamGroupValidatedReq paramGroupValidatedReq) {
         log.info("result {}", JSON.toJSONString(paramGroupValidatedReq));
@@ -41,6 +46,12 @@ public class ParamGroupValidatedController {
 
     @PostMapping(value = "update1")
     public void update1(@RequestBody @Validated(value = ParamGroupValidatedReq.Update.class) ParamGroupValidatedReq paramGroupValidatedReq) {
+        log.info("result {}", JSON.toJSONString(paramGroupValidatedReq));
+    }
+
+    @PostMapping(value = "create2")
+    public void create2(@RequestBody ParamGroupValidatedReq paramGroupValidatedReq) {
+        this.paramGroupValidatedService.create1(paramGroupValidatedReq);
         log.info("result {}", JSON.toJSONString(paramGroupValidatedReq));
     }
 
