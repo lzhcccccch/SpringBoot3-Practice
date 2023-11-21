@@ -1,5 +1,7 @@
 package com.lzhch.practice.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,21 +23,35 @@ import java.util.Objects;
 public class GlobalExceptionHandler {
 
     /**
-     * Controller 参数校验
+     * Controller 层参数校验
      *
-     * @param e MethodArgumentNotValidException: controller 层参数校验失败异常类型
-     * @return String: 可返回系统统一返回包装类
-     * Author: lzhch 2023/5/10 15:43
+     * @param methodArgumentNotValidException: Controller 层参数校验失败异常类型
+     * @return 统一封装的结果类, 含有代码code和提示信息msg
+     * Author: lzhch 2023/11/21 15:13
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public String handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage(), e);
-        FieldError fieldError = e.getBindingResult().getFieldError();
+    public String handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+        log.error(methodArgumentNotValidException.getMessage(), methodArgumentNotValidException);
+        FieldError fieldError = methodArgumentNotValidException.getBindingResult().getFieldError();
         if (Objects.isNull(fieldError)) {
-            return e.getMessage();
+            return methodArgumentNotValidException.getMessage();
         }
 
         return fieldError.getDefaultMessage();
+    }
+
+    /**
+     * 捕获并处理未授权异常
+     *
+     * @param e: Service 层参数校验失败异常类型
+     * @return 统一封装的结果类, 含有代码code和提示信息msg
+     * Author: lzhch 2023/11/21 15:13
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public String handleConstraintViolationException(ConstraintViolationException e) {
+        return String.join(";", e.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessageTemplate)
+                .toList());
     }
 
 }

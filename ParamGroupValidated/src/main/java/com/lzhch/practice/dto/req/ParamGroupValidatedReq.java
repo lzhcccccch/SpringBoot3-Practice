@@ -1,9 +1,14 @@
 package com.lzhch.practice.dto.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lzhch.practice.validatedtype.CreateParamValidated;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import com.lzhch.practice.validatedtype.ParamGroupValidated;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serial;
@@ -31,7 +36,7 @@ public class ParamGroupValidatedReq implements Serializable {
      * 用户ID
      * 内部定义接口和统一定义接口任选其一即可
      */
-    @NotNull(message = "用户id不能为空", groups = CreateParamValidated.class)
+    @NotNull(message = "用户id不能为空", groups = ParamGroupValidated.Create.class)
     // @NotNull(message = "用户id不能为空") // Service 层不进行分组校验
     // @NotNull(message = "用户id不能为空", groups = ParamGroupValidatedReq.Save.class)
     private Long userId;
