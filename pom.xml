@@ -11,7 +11,7 @@
 
     <modules>
         <module>MessageQueue</module>
-        <module>EasyRuleDemo</module>
+        <module>RuleEngine</module>
         <module>ParamGroupValidated</module>
     </modules>
 

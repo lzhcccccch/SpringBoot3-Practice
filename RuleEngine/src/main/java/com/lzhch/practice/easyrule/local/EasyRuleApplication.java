@@ -1,8 +1,8 @@
-package com.lzhch.practice.easyruledemo.local;
+package com.lzhch.practice.easyrule.local;
 
-import com.lzhch.practice.easyruledemo.rules.MyRuleOne;
-import com.lzhch.practice.easyruledemo.rules.MyRuleThree;
-import com.lzhch.practice.easyruledemo.rules.MyRuleTwo;
+import com.lzhch.practice.easyrule.rules.MyRuleOne;
+import com.lzhch.practice.easyrule.rules.MyRuleThree;
+import com.lzhch.practice.easyrule.rules.MyRuleTwo;
 import org.jeasy.rules.api.*;
 import org.jeasy.rules.core.DefaultRulesEngine;
 import org.jeasy.rules.core.RuleBuilder;
@@ -15,7 +15,7 @@ import org.jeasy.rules.core.RuleBuilder;
  * date: 2023/7/27 17:41
  */
 
-public class LocalRuleApplication {
+public class EasyRuleApplication {
     public static void main(String[] args) {
         // create a rules engine
         // skipOnFirstAppliedRule(true) 在满足一个规则之后, 无论成功与失败, 均跳过后面的规则

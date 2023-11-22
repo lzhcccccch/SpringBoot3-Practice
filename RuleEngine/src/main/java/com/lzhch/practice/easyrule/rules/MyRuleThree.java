@@ -1,4 +1,4 @@
-package com.lzhch.practice.easyruledemo.rules;
+package com.lzhch.practice.easyrule.rules;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jeasy.rules.annotation.Action;

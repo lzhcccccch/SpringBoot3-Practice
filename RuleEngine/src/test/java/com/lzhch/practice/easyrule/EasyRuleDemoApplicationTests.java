@@ -1,4 +1,4 @@
-package com.lzhch.practice.easyruledemo;
+package com.lzhch.practice.easyrule;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,13 +1,13 @@
-package com.lzhch.practice.easyruledemo;
+package com.lzhch.practice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EasyRuleDemoApplication {
+public class RuleEngineApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EasyRuleDemoApplication.class, args);
+        SpringApplication.run(RuleEngineApplication.class, args);
     }
 
 }
