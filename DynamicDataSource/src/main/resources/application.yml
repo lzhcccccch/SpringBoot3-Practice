@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      name: master
+      url: jdbc:mysql://ip:port/database?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
+      username: username
+      password: password
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      slave:
+        enable: true
+        name: slave
+        url: jdbc:mysql://localhost:3306/database?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
+        username: username
+        password: password
+        driver-class-name: com.mysql.cj.jdbc.Driver

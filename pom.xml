@@ -13,6 +13,7 @@
         <module>MessageQueue</module>
         <module>RuleEngine</module>
         <module>ParamGroupValidated</module>
+        <module>DynamicDataSource</module>
     </modules>
 
 
@@ -118,6 +119,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.2.5.RELEASE</version>
                 <configuration>
                     <excludes>
                         <exclude>
