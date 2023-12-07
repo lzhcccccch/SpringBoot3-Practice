@@ -1,7 +1,7 @@
 package com.lzhch.practice.dynamic;
 
-import cn.hutool.core.thread.threadlocal.NamedThreadLocal;
 import cn.hutool.core.util.StrUtil;
+import org.springframework.core.NamedThreadLocal;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
