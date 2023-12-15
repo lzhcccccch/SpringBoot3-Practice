@@ -1,6 +1,7 @@
 package com.lzhch.practice.dynamic.config;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,22 +10,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 阿里巴巴 Druid 数据源配置
+ * 阿里巴巴 Druid 数据源的固定配置
+ * 适合数据源确定且不变的情况
  * <p>
  * author: lzhch
  * version: v1.0
- * date: 2023/12/5 15:03
+ * date: 2023/12/15 17:53
  */
 
 @Configuration
-public class DruidDataSourceConfig {
+public class DruidDataSourceFixedConfig {
 
     @Value(value = "${spring.datasource.druid.slave.enable}")
     private String slaveEnabled;
+
+    @Resource
+    private DruidCommonProperties druidCommonProperties;
 
     /***
      *  设置主数据源
@@ -36,15 +42,15 @@ public class DruidDataSourceConfig {
      * Since: 1.0.0
      */
     @Bean(name = "masterDataSource", initMethod = "init")
-    @ConfigurationProperties("spring.datasource.druid")
+    @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
-        return DruidDataSourceBuilder.create().build();
+        return druidCommonProperties.dataSource(DruidDataSourceBuilder.create().build());
     }
 
-    /***
-     *  设置从数据源
-     *  当 spring.datasource.druid.slave.enable 为 true 时开启从数据源
-     *  {@link #slaveEnabled}
+    /**
+     * 设置从数据源
+     * 当 spring.datasource.druid.slave.enable 为 true 时开启从数据源
+     * {@link #slaveEnabled}
      *
      * @return DataSource
      * Author: lzhch 2023/12/6 17:38
@@ -66,7 +72,7 @@ public class DruidDataSourceConfig {
      */
     @Bean
     @Primary
-    public DynamicDataSource dataSource() {
+    public DynamicDataSource dataSource() throws SQLException {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.MASTER, masterDataSource());
         if ("true".equals(slaveEnabled)) {
