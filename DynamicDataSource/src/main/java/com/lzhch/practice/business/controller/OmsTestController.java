@@ -49,12 +49,14 @@ public class OmsTestController {
      */
     @GetMapping("{id}")
     public String selectOne(@PathVariable Long id) {
+        log.info("=======Controller Thread :{}", Thread.currentThread().getName());
         String master = JSON.toJSONString(this.omsTestService.getById(id));
         log.info("master :{}", master);
 
         String slave = JSON.toJSONString(this.omsTestService.selectById(id));
         log.info("slave :{}", slave);
 
+        log.info("=======Controller final Thread :{}", Thread.currentThread().getName());
         String master1 = JSON.toJSONString(this.omsTestService.getById(id));
         log.info("master1 :{}", master1);
         return master + "\n" + slave + "\n" + master1;

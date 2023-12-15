@@ -32,7 +32,8 @@ public class DataSourceAspect {
      * 注意：这里只拦截所注解的类，如果调用的是父类的方法，那么不会拦截，除非父类方法在子类中被覆盖。
      */
     @Pointcut("@annotation(com.lzhch.practice.dynamic.annotation.DataSource) || @within(com.lzhch.practice.dynamic.annotation.DataSource)")
-    public void dataSourcePointCut() {}
+    public void dataSourcePointCut() {
+    }
 
     @Around("dataSourcePointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
@@ -42,15 +43,15 @@ public class DataSourceAspect {
 
         DataSource dsMethod = method.getAnnotation(DataSource.class);
         DataSource dsClass = dataClass.getAnnotation(DataSource.class);
-        if(dsMethod != null){
+        if (dsMethod != null) {
             //方法优先，如果方法上存在注解，则优先使用方法上的注解
             DynamicDataSourceContextHolder.push(dsMethod.value());
             log.debug("method first, set datasource is " + dsMethod.value());
-        }else if(dsClass != null){
+        } else if (dsClass != null) {
             //其次类优先，如果类上存在注解，则使用类上的注解
             DynamicDataSourceContextHolder.push(dsClass.value());
             log.debug("class second, set datasource is " + dsClass.value());
-        }else{
+        } else {
             //如果都不存在，则使用默认
             DynamicDataSourceContextHolder.push(DataSourceType.MASTER);
             log.debug("default, set datasource is " + DataSourceType.MASTER);
@@ -59,7 +60,9 @@ public class DataSourceAspect {
         try {
             return point.proceed();
         } finally {
-            DynamicDataSourceContextHolder.clear();
+            // 不使用 clear 方法, 否则后面的数据源切换会被清空, 造成数据源切换失败
+            // DynamicDataSourceContextHolder.clear();
+            DynamicDataSourceContextHolder.poll();
             log.debug("clean datasource");
         }
     }

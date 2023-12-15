@@ -49,26 +49,25 @@ public final class DynamicDataSourceContextHolder {
      * 如非必要不要手动调用，调用后确保最终清除
      * </p>
      *
-     * @param ds 数据源名称
-     * @return 数据源名称
+     * @param dataSource 数据源名称
      */
-    public static String push(String ds) {
-        String dataSourceStr = StrUtil.isEmpty(ds) ? "" : ds;
+    public static void push(String dataSource) {
+        String dataSourceStr = StrUtil.isEmpty(dataSource) ? "" : dataSource;
         LOOKUP_KEY_HOLDER.get().push(dataSourceStr);
-        return dataSourceStr;
     }
 
     /**
      * 清空当前线程数据源
      * <p>
      * 如果当前线程是连续切换数据源 只会移除掉当前线程的数据源名称
+     * clear() 会清空所有的数据源, 导致后续的 Service 调用都会使用默认的数据源
      * </p>
      */
     public static void poll() {
         Deque<String> deque = LOOKUP_KEY_HOLDER.get();
         deque.poll();
         if (deque.isEmpty()) {
-            LOOKUP_KEY_HOLDER.remove();
+            clear();
         }
     }
 
