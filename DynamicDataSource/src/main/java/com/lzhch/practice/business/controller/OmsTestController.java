@@ -8,6 +8,7 @@ import com.lzhch.practice.business.entity.OmsTest;
 import com.lzhch.practice.business.service.OmsTestService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,9 +49,13 @@ public class OmsTestController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @Transactional(rollbackFor = Exception.class)
+    // @Transactional(rollbackFor = Exception.class, transactionManager="masterTransactionManager")
+    // @MultiDataSourceTransactional(transactionManagers={"masterTransactionManager"})
     public String selectOne(@PathVariable Long id) {
         log.info("=======Controller Thread :{}", Thread.currentThread().getName());
-        String master = JSON.toJSONString(this.omsTestService.getById(id));
+        OmsTest omsTest = this.omsTestService.getById(id);
+        String master = JSON.toJSONString(omsTest);
         log.info("master :{}", master);
 
         String slave = JSON.toJSONString(this.omsTestService.selectById(id));
@@ -63,6 +68,37 @@ public class OmsTestController {
     }
 
     /**
+     * 修改数据
+     *
+     * @param omsTest 实体对象
+     * @return 修改结果
+     */
+    @PutMapping
+    @Transactional(rollbackFor = Exception.class)
+    // @Transactional(rollbackFor = Exception.class, transactionManager = "masterTransactionManager")
+    // @MultiDataSourceTransactional(transactionManagers={"masterTransactionManager"})
+    public String update(@RequestBody OmsTest omsTest) {
+        // 正常流程如下, 需要将事务的传播机制设置为 Propagation.REQUIRES_NEW
+        // 1. 只在 Controller 层添加 @Transactional(rollbackFor = Exception.class), 无法切换从库数据源
+
+        // 2. 在 Controller 层 和 service 上 添加 @Transactional(rollbackFor = Exception.class), 无法切换从库数据源
+
+        // 3. 在 Controller 层添加 @Transactional(rollbackFor = Exception.class), 在 service 上添加 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW), 可以切换数据源
+
+
+
+        // 正常流程不测试, 只测试抛异常情况, 在selfUpdateById方法中抛出异常
+
+        // 1. 都不回滚?
+        this.omsTestService.updateById(omsTest);
+        this.omsTestService.selfUpdateById(omsTest);
+        // int a = 1/0;
+
+
+        return "success";
+    }
+
+    /**
      * 新增数据
      *
      * @param omsTest 实体对象
@@ -71,17 +107,6 @@ public class OmsTestController {
     @PostMapping
     public String insert(@RequestBody OmsTest omsTest) {
         return JSON.toJSONString(this.omsTestService.save(omsTest));
-    }
-
-    /**
-     * 修改数据
-     *
-     * @param omsTest 实体对象
-     * @return 修改结果
-     */
-    @PutMapping
-    public String update(@RequestBody OmsTest omsTest) {
-        return JSON.toJSONString(this.omsTestService.updateById(omsTest));
     }
 
     /**

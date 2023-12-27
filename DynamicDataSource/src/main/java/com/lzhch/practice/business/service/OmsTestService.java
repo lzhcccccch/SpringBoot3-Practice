@@ -13,5 +13,7 @@ public interface OmsTestService extends IService<OmsTest> {
 
     OmsTest selectById(Long id);
 
+    void selfUpdateById(OmsTest omsTest);
+
 }
 
