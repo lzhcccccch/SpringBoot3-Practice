@@ -61,8 +61,9 @@ public class DefaultDataSourceAspect {
         }
 
         // 根据一定规则设置对应的数据源
-        DynamicDataSourceContextHolder.push(DataSourceType.SLAVE);
-        // log.info("操作 {} 方法, 数据源: {}", methodName, dataSource);
+        String dataSource = DataSourceType.MASTER;
+        DynamicDataSourceContextHolder.push(dataSource);
+        log.info("操作 {} 方法, 数据源: {}", methodName, dataSource);
 
         try {
             // 执行方法

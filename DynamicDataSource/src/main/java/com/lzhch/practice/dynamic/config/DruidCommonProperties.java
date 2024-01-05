@@ -155,13 +155,16 @@ public class DruidCommonProperties {
         return datasource;
     }
 
-    public DruidXADataSource XADataSource(DruidDataSource datasource) {
+    /***
+     *  XA 多数据源事务属性设置
+     *
+     * @return DruidXADataSource
+     * Author: lzhch 2024/1/5 18:15
+     * Since: 1.0.0
+     */
+    public DruidXADataSource XADataSource() {
         DruidXADataSource druidXADataSource = new DruidXADataSource();
-        druidXADataSource.setUrl(datasource.getUrl());
-        druidXADataSource.setUsername(datasource.getUsername());
-        druidXADataSource.setPassword(datasource.getPassword());
-        druidXADataSource.setDriverClassName(datasource.getDriverClassName());
-        // 配置初始化大小、最小、最大
+        // 将上面方法的属性复制下来即可
         druidXADataSource.setInitialSize(initialSize);
         druidXADataSource.setMaxActive(maxActive);
         druidXADataSource.setMinIdle(minIdle);

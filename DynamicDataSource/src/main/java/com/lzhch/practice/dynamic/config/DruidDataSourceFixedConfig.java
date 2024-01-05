@@ -1,6 +1,5 @@
 package com.lzhch.practice.dynamic.config;
 
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -44,7 +43,8 @@ public class DruidDataSourceFixedConfig {
     @Bean(name = "masterDataSource", initMethod = "init")
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
-        return druidCommonProperties.dataSource(DruidDataSourceBuilder.create().build());
+        // return druidCommonProperties.dataSource(DruidDataSourceBuilder.create().build());
+        return druidCommonProperties.XADataSource();
     }
 
     /**
@@ -60,17 +60,20 @@ public class DruidDataSourceFixedConfig {
     @ConfigurationProperties("spring.datasource.druid.slave")
     @ConditionalOnProperty(prefix = "spring.datasource.druid.slave", name = "enable", havingValue = "true")
     public DataSource slaveDataSource() {
-        return DruidDataSourceBuilder.create().build();
+        // return DruidDataSourceBuilder.create().build();
+        // 使用 XA 控制多数据源事务
+        return druidCommonProperties.XADataSource();
     }
 
     /***
      *  进行多数据源设置
+     *  指定name, 使用 @Qualifier(value = "dynamicDataSource") 获取
      *
      * @return DynamicDataSource
      * Author: lzhch 2023/12/6 17:38
      * Since: 1.0.0
      */
-    @Bean
+    @Bean(name = "dynamicDataSource")
     public DynamicDataSource dataSource() {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.MASTER, masterDataSource());

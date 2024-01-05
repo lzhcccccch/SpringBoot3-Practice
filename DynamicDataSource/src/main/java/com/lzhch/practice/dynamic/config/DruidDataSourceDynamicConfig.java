@@ -2,10 +2,9 @@ package com.lzhch.practice.dynamic.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
-import com.alibaba.druid.support.jakarta.StatViewServlet;
-import com.alibaba.druid.support.jakarta.WebStatFilter;
+import com.alibaba.druid.support.http.StatViewServlet;
+import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
-import jakarta.annotation.Resource;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -45,6 +45,7 @@ public class DruidDataSourceDynamicConfig {
      * Author: lzhch 2023/12/6 17:36
      * Since: 1.0.0
      */
+    @Primary
     @Bean(name = "masterDataSource", initMethod = "init")
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
@@ -58,8 +59,7 @@ public class DruidDataSourceDynamicConfig {
      * Author: lzhch 2023/12/6 17:38
      * Since: 1.0.0
      */
-    @Bean
-    @Primary
+    @Bean(name = "dynamicDataSource")
     public DynamicDataSource dataSource() throws SQLException {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.MASTER, masterDataSource());
