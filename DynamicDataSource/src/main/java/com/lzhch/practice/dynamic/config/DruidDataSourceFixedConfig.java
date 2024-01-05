@@ -1,7 +1,6 @@
 package com.lzhch.practice.dynamic.config;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +40,7 @@ public class DruidDataSourceFixedConfig {
      * Author: lzhch 2023/12/6 17:36
      * Since: 1.0.0
      */
+    @Primary
     @Bean(name = "masterDataSource", initMethod = "init")
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
@@ -71,8 +71,7 @@ public class DruidDataSourceFixedConfig {
      * Since: 1.0.0
      */
     @Bean
-    @Primary
-    public DynamicDataSource dataSource() throws SQLException {
+    public DynamicDataSource dataSource() {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(DataSourceType.MASTER, masterDataSource());
         if ("true".equals(slaveEnabled)) {
@@ -80,5 +79,24 @@ public class DruidDataSourceFixedConfig {
         }
         return new DynamicDataSource(masterDataSource(), targetDataSources);
     }
+
+    /**
+     * 配置事务管理器
+     *
+     * @return DataSourceTransactionManager
+     * Author: lzhch 2023/12/26 16:04
+     * Since: 1.0.0
+     */
+    /*@Primary
+    @Bean(name = "masterTransactionManager")
+    public DataSourceTransactionManager masterTransactionManager() {
+        *//*
+         *  如果不进行事务管理器的配置, 在添加了 @Transactional 注解时会导致无法切换数据源;
+         *  添加了该配置, 并在需要切换数据源的地方使用 @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW) 新开启一个事务, 保证可以正常切换数据源
+         *  但是该方式会导致数据不一致, 因为新开启的事务不能和原来的事务保持一致性
+         *//*
+        // PlatformTransactionManager
+        return new DataSourceTransactionManager(masterDataSource());
+    }*/
 
 }
