@@ -1,76 +1,9 @@
 server:
   port: 8080
+
 spring:
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
-    druid:
-      master:
-        name: master
-        url: jdbc:mysql://IP:port/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
-        username: test
-        password: Gv
-        driver-class-name: com.mysql.cj.jdbc.Driver
-      # slave 配置为 DruidDataSourceFixedConfig 的从库配置, DruidDataSourceFixedConfig 和 DruidDataSourceDynamicConfig 选其一
-      slave:
-        enable: true
-        name: slave
-        url: jdbc:mysql://localhost:3306/order?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
-        username: root
-        password: root
-        driver-class-name: com.mysql.cj.jdbc.Driver
-      # slave 配置为 DruidDataSourceDynamicConfig 的从库配置, DruidDataSourceFixedConfig 和 DruidDataSourceDynamicConfig 选其一
-      slaveDataSourcesMap:
-        slave1:
-          enable: true
-          name: slave
-          url: jdbc:mysql://localhost:3306/order?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
-          username: root
-          password: root
-          driver-class-name: com.mysql.cj.jdbc.Driver
-        slave2:
-          enable: true
-          name: slave
-          url: jdbc:mysql://localhost:3306/order?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
-          username: root
-          password: root
-          driver-class-name: com.mysql.cj.jdbc.Driver
-        slave3:
-          enable: true
-          name: slave
-          url: jdbc:mysql://localhost:3306/order?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
-          username: root
-          password: root
-          driver-class-name: com.mysql.cj.jdbc.Driver
-      initialSize: 5
-      minIdle: 10
-      maxActive: 20
-      maxWait: 60000
-      timeBetweenEvictionRunsMillis: 60000
-      minEvictableIdleTimeMillis: 300000
-      maxEvictableIdleTimeMillis: 900000
-      validationQuery: SELECT 1 FROM DUAL
-      testWhileIdle: true
-      testOnBorrow: false
-      testOnReturn: false
-      webStatFilter:
-        enabled: true
-      statViewServlet:
-        enabled: true
-        allow:
-        url-pattern: /monitor/druid/*
-      filter:
-        stat:
-          enabled: true
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: true
-        wall:
-          config:
-            multi-statement-allow: true
-      remove-abandoned: true
-      # 单位:秒
-      remove-abandoned-timeout: 900
-      log-abandoned: true
-      # socket超时时间,防止慢SQL报错,单位:毫秒
-      socket-timeout: 30000
+  application:
+    name: multi-datasource
+  profiles:
+    active: self2dbs
+#    active: datasource
