@@ -9,7 +9,6 @@ import com.lzhch.practice.dynamic.annotation.DataSource;
 import com.lzhch.practice.dynamic.config.DataSourceType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -23,33 +22,28 @@ import javax.annotation.Resource;
 @Slf4j
 @Service("omsTestService")
 // @DataSource(value = DataSourceType.SLAVE)
-// @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 public class OmsTestServiceImpl extends ServiceImpl<OmsTestMapper, OmsTest> implements OmsTestService {
 
     @Resource
     private OmsTestMapper omsTestMapper;
 
     @Override
-    // @DataSource(value = DataSourceType.SLAVE)
-    // @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
-    // @MultiDataSourceTransactional(transactionManagers={"slaveTransactionManager"})
+    @DataSource(value = DataSourceType.SLAVE)
     public OmsTest selectById(Long id) {
-        log.info("=======Serivce Thread :{}", Thread.currentThread().getName());
+        log.info("=======Service Thread :{}", Thread.currentThread().getName());
         return baseMapper.selectById(id);
     }
 
     @Override
     // @DSTransactional(rollbackFor = Exception.class)
-    // @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW, transactionManager = "slaveTransactionManager")
-    @Transactional(rollbackFor = Exception.class)
-    // @MultiDataSourceTransactional(transactionManagers={"masterTransactionManager"})
+    // @Transactional(rollbackFor = Exception.class)
     @DataSource(value = DataSourceType.SLAVE)
     public void selfUpdateById(OmsTest omsTest) {
         OmsTest entity = BeanUtil.copyProperties(omsTest, OmsTest.class);
         entity.setTestA(omsTest.getTestA() + "slave");
         // omsTestMapper.updateById(entity);
         omsTestMapper.selfUpdateById(entity);
-        int a = 1/0;
+        // int a = 1/0;
     }
 
 }

@@ -4,11 +4,14 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.xa.DruidXADataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.atomikos.jdbc.AtomikosDataSourceBean;
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.lzhch.practice.dynamic.config.DataSourceType;
 import com.lzhch.practice.dynamic.config.DruidCommonProperties;
 import com.lzhch.practice.dynamic.config.DynamicDataSource;
+import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -54,7 +57,7 @@ public class JtaDataSourceConfig {
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
         DruidXADataSource dataSource = druidCommonProperties.XADataSource(DruidDataSourceBuilder.create().build());
-        dataSource.setUrl("jdbc:mysql://IP:port/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true");
+        dataSource.setUrl("jdbc:mysql://datasource?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true");
         dataSource.setUsername("test");
         dataSource.setPassword("G678w2@test");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -110,6 +113,8 @@ public class JtaDataSourceConfig {
     /**
      * 设置 SqlSessionFactory
      * 在 CustomSqlSessionTemplate 进行 factory 的切换实现多数据源事务
+     * sqlSessionTemplate 与 Spring 事务管理一起使用，以确保使用的实际 SqlSession 是与当前 Spring 事务关联的,
+     * 此外它还管理会话生命周期，包括根据 Spring 事务配置根据需要关闭，提交或回滚会话
      */
     @Bean
     public CustomSqlSessionTemplate initSqlSessionTemplate() throws Exception {
@@ -127,19 +132,34 @@ public class JtaDataSourceConfig {
         Map<Object, Object> targetSource = new HashMap<>();
         targetSource.put(DataSourceType.MASTER, masterDataSource());
         targetSource.put(DataSourceType.SLAVE, slaveDataSource());
-        Map<Object, SqlSessionFactory> target = new HashMap<>();
+        Map<Object, SqlSessionFactory> sqlSessionFactoryMap = new HashMap<>();
         String targetSources = DataSourceType.MASTER + "," + DataSourceType.SLAVE;
         for (String key : targetSources.split(",")) {
-            SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-            bean.setDataSource((DataSource) targetSource.get(key));
+            // SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+            // 注意这里使用的是mybatis-plus，所以需要使用 MybatisSqlSessionFactoryBean 来代替 SqlSessionFactoryBean
+            // 如果使用 SqlSessionFactoryBean, 则无法对 mybatis-plus 的方法进行事务管理
+            MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
+            mybatisSqlSessionFactoryBean.setDataSource((DataSource) targetSource.get(key));
             String mappingPath = "classpath*:mapper/**/*Mapper.xml";
             if (StrUtil.isNotBlank(mappingPath)) {
                 org.springframework.core.io.Resource[] local = new PathMatchingResourcePatternResolver().getResources(mappingPath.replace("classpath*:**", "classpath:"));
-                bean.setMapperLocations(local);
+                mybatisSqlSessionFactoryBean.setMapperLocations(local);
             }
-            target.put(key, bean.getObject());
+
+            // 如果在使用时有和原生 mybatis-plus 不一致的情况, 在这里对每个数据源进行单独设置
+            MybatisConfiguration configuration = new MybatisConfiguration();
+            //配置驼峰命名
+            configuration.setMapUnderscoreToCamelCase(true);
+            //配置sql日志
+            configuration.setLogImpl(StdOutImpl.class);
+            mybatisSqlSessionFactoryBean.setConfiguration(configuration);
+            mybatisSqlSessionFactoryBean.setGlobalConfig(new GlobalConfig());
+            mybatisSqlSessionFactoryBean.setPlugins();
+
+            // sqlSessionFactoryMap.put(key, mybatisSqlSessionFactoryBean.getObject());
+            sqlSessionFactoryMap.put(key, mybatisSqlSessionFactoryBean.getObject());
         }
-        return target;
+        return sqlSessionFactoryMap;
     }
 
 }
