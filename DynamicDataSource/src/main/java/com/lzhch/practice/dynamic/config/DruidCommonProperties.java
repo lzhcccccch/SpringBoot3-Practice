@@ -1,6 +1,7 @@
 package com.lzhch.practice.dynamic.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.xa.DruidXADataSource;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -152,6 +153,20 @@ public class DruidCommonProperties {
         datasource.setSocketTimeout(socketTimeout);
 
         return datasource;
+    }
+
+    public DruidXADataSource XADataSource(DruidDataSource datasource) {
+        DruidXADataSource druidXADataSource = new DruidXADataSource();
+        druidXADataSource.setUrl(datasource.getUrl());
+        druidXADataSource.setUsername(datasource.getUsername());
+        druidXADataSource.setPassword(datasource.getPassword());
+        druidXADataSource.setDriverClassName(datasource.getDriverClassName());
+        // 配置初始化大小、最小、最大
+        druidXADataSource.setInitialSize(initialSize);
+        druidXADataSource.setMaxActive(maxActive);
+        druidXADataSource.setMinIdle(minIdle);
+
+        return druidXADataSource;
     }
 
 }

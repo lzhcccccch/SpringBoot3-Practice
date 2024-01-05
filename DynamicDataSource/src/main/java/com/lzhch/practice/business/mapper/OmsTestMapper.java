@@ -1,4 +1,4 @@
-package com.lzhch.practice.business.dao;
+package com.lzhch.practice.business.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lzhch.practice.business.entity.OmsTest;
@@ -12,7 +12,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 
 @Mapper
-public interface OmsTestDao extends BaseMapper<OmsTest> {
+public interface OmsTestMapper extends BaseMapper<OmsTest> {
+
+    void selfUpdateById(OmsTest omsTest);
 
 }
 
