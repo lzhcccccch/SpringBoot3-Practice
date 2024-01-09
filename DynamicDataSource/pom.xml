@@ -74,12 +74,12 @@
 <!--            <version>4.2.0</version>-->
 <!--        </dependency>-->
 
+        <!-- 基于 JTA 实现 XA 模式事务依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jta-atomikos</artifactId>
             <version>2.7.18</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>

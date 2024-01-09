@@ -1,7 +1,6 @@
 package com.lzhch.practice.dynamic.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
@@ -49,7 +48,8 @@ public class DruidDataSourceDynamicConfig {
     @Bean(name = "masterDataSource", initMethod = "init")
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
-        return druidCommonProperties.dataSource(DruidDataSourceBuilder.create().build());
+        // return druidCommonProperties.dataSource(DruidDataSourceBuilder.create().build());
+        return druidCommonProperties.XADataSource();
     }
 
     /**
@@ -75,7 +75,7 @@ public class DruidDataSourceDynamicConfig {
             DataSourceProperties value = entry.getValue();
 
             // 创建Druid数据源对象
-            DruidDataSource druidDataSource = DruidDataSourceBuilder.create().build();
+            DruidDataSource druidDataSource = druidCommonProperties.XADataSource();
 
             // 设置数据源名称
             druidDataSource.setName(key);
@@ -91,9 +91,6 @@ public class DruidDataSourceDynamicConfig {
 
             // 设置驱动类名
             druidDataSource.setDriverClassName(value.getDriverClassName());
-
-            // 将数据源添加到DruidCommonProperties中
-            druidCommonProperties.dataSource(druidDataSource);
 
             // 初始化数据源
             druidDataSource.init();
