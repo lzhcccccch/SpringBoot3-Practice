@@ -19,6 +19,8 @@
         <mybatis-plus-version>3.5.4.1</mybatis-plus-version>
         <druid-version>1.2.20</druid-version>
         <mysql-connect-version>8.2.0</mysql-connect-version>
+        <version-spring-boot-dependencies>2.7.18</version-spring-boot-dependencies>
+        <version-logback>1.4.14</version-logback>
     </properties>
 
     <dependencies>
@@ -26,18 +28,43 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>${version-spring-boot-dependencies}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- SpringBoot Web 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>${version-spring-boot-dependencies}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${version-logback}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${version-logback}</version>
         </dependency>
 
         <!-- SpringBoot 测试依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${version-spring-boot-dependencies}</version>
             <scope>test</scope>
         </dependency>
 
@@ -45,6 +72,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
+            <version>1.9.7</version>
         </dependency>
 
         <!-- SpringBoot MybatisPlus 依赖 -->
@@ -68,11 +96,11 @@
             <version>${mysql-connect-version}</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.baomidou</groupId>-->
-<!--            <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>-->
-<!--            <version>4.2.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.baomidou</groupId>-->
+        <!--            <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>-->
+        <!--            <version>4.2.0</version>-->
+        <!--        </dependency>-->
 
         <!-- 基于 JTA 实现 XA 模式事务依赖-->
         <dependency>
@@ -83,6 +111,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${version-spring-boot-dependencies}</version>
         </dependency>
     </dependencies>
 

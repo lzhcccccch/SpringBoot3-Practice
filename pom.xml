@@ -21,10 +21,8 @@
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <version-spring-boot-dependencies>2.7.18</version-spring-boot-dependencies>
-<!--        <version-spring-boot-dependencies>3.1.5</version-spring-boot-dependencies>-->
-        <version-spring-boot-admin-dependencies>2.7.15</version-spring-boot-admin-dependencies>
-<!--        <version-spring-boot-admin-dependencies>3.1.8</version-spring-boot-admin-dependencies>-->
+        <version-spring-boot-dependencies>3.1.5</version-spring-boot-dependencies>
+        <version-spring-boot-admin-dependencies>3.1.8</version-spring-boot-admin-dependencies>
         <version-lombok>1.18.30</version-lombok>
         <version-snakeyaml>2.0</version-snakeyaml>
         <version-fastjson2>2.0.42</version-fastjson2>

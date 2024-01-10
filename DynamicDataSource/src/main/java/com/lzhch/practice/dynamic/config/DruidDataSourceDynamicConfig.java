@@ -72,13 +72,13 @@ public class DruidDataSourceDynamicConfig {
         for (Map.Entry<String, DataSourceProperties> entry : allDataSourcesMap.entrySet()) {
 
             // 获取键值
-            String key = entry.getKey();
+            String datasourceName = entry.getValue().getName();
             DataSourceProperties value = entry.getValue();
 
             // 创建Druid数据源对象
             DruidDataSource druidDataSource = druidCommonProperties.XADataSource();
             // 设置数据源名称,数据库连接URL,用户名,密码,驱动类名
-            druidDataSource.setName(key);
+            druidDataSource.setName(datasourceName);
             druidDataSource.setUrl(value.getUrl());
             druidDataSource.setUsername(value.getUsername());
             druidDataSource.setPassword(value.getPassword());
@@ -87,7 +87,7 @@ public class DruidDataSourceDynamicConfig {
             druidDataSource.init();
 
             // 将数据源添加到targetDataSources中
-            targetDataSources.put(key, druidDataSource);
+            targetDataSources.put(datasourceName, druidDataSource);
         }
 
         // 返回动态数据源
