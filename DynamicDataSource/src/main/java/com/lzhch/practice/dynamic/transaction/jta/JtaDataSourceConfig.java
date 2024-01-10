@@ -49,7 +49,6 @@ public class JtaDataSourceConfig {
     /**
      * 设置 SqlSessionFactory
      */
-
     private Map<Object, SqlSessionFactory> getSqlSessionFactory(DynamicDataSource dynamicDataSource) throws Exception {
         Map<Object, DataSource> targetSource = new HashMap<>();
         Map<Object, DataSource> resolvedDataSources = dynamicDataSource.getResolvedDataSources();

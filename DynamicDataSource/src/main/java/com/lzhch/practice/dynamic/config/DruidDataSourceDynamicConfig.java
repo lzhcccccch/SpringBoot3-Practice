@@ -36,7 +36,7 @@ public class DruidDataSourceDynamicConfig {
     private DruidCommonProperties druidCommonProperties;
 
     /***
-     *  设置主数据源
+     *  主数据源
      *  initMethod = "init", 其中 init 调用 DruidDataSource 中的 init 方法;
      *  指定该属性, 可在应用启动时控制台看到初始化日志; 若不指定, 则在使用时进行初始化, 且不会打印初始化日志.
      *
@@ -44,7 +44,6 @@ public class DruidDataSourceDynamicConfig {
      * Author: lzhch 2023/12/6 17:36
      * Since: 1.0.0
      */
-    @Primary
     @Bean(name = "masterDataSource", initMethod = "init")
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
@@ -54,11 +53,13 @@ public class DruidDataSourceDynamicConfig {
 
     /**
      * 进行多数据源设置
+     * 默认注入多数据源, 所以 @Primary 加在多数据源 Bean 上
      *
      * @return DynamicDataSource
      * Author: lzhch 2023/12/6 17:38
      * Since: 1.0.0
      */
+    @Primary
     @Bean(name = "dynamicDataSource")
     public DynamicDataSource dataSource() throws SQLException {
         Map<Object, Object> targetDataSources = new HashMap<>();
@@ -76,22 +77,12 @@ public class DruidDataSourceDynamicConfig {
 
             // 创建Druid数据源对象
             DruidDataSource druidDataSource = druidCommonProperties.XADataSource();
-
-            // 设置数据源名称
+            // 设置数据源名称,数据库连接URL,用户名,密码,驱动类名
             druidDataSource.setName(key);
-
-            // 设置数据库连接URL
             druidDataSource.setUrl(value.getUrl());
-
-            // 设置用户名
             druidDataSource.setUsername(value.getUsername());
-
-            // 设置密码
             druidDataSource.setPassword(value.getPassword());
-
-            // 设置驱动类名
             druidDataSource.setDriverClassName(value.getDriverClassName());
-
             // 初始化数据源
             druidDataSource.init();
 
@@ -113,8 +104,7 @@ public class DruidDataSourceDynamicConfig {
     @Bean
     public ServletRegistrationBean<StatViewServlet> statViewServlet() {
         // 配置StatViewServlet ServletRegistrationBean
-        ServletRegistrationBean<StatViewServlet> srb =
-                new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
+        ServletRegistrationBean<StatViewServlet> srb = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
 
         // 设置控制台管理用户
         srb.addInitParameter("loginUsername", "root");
