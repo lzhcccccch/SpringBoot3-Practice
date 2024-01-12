@@ -2,6 +2,7 @@ package com.lzhch.practice.dynamic.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.xa.DruidXADataSource;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -105,11 +106,9 @@ public class DruidCommonProperties {
 
     /**
      * 配置数据源
-     *
-     * @param datasource 数据源
-     * @return DruidDataSource
      */
-    public DruidDataSource dataSource(DruidDataSource datasource) {
+    public DruidDataSource dataSource() {
+        DruidDataSource datasource = DruidDataSourceBuilder.create().build();
         // 配置初始化大小、最小、最大
         datasource.setInitialSize(initialSize);
         datasource.setMaxActive(maxActive);

@@ -47,8 +47,7 @@ public class DruidDataSourceDynamicConfig {
     @Bean(name = "masterDataSource", initMethod = "init")
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
-        // return druidCommonProperties.dataSource(DruidDataSourceBuilder.create().build());
-        return druidCommonProperties.XADataSource();
+        return druidCommonProperties.dataSource();
     }
 
     /**
@@ -76,7 +75,7 @@ public class DruidDataSourceDynamicConfig {
             DataSourceProperties value = entry.getValue();
 
             // 创建Druid数据源对象
-            DruidDataSource druidDataSource = druidCommonProperties.XADataSource();
+            DruidDataSource druidDataSource = druidCommonProperties.dataSource();
             // 设置数据源名称,数据库连接URL,用户名,密码,驱动类名
             druidDataSource.setName(datasourceName);
             druidDataSource.setUrl(value.getUrl());
@@ -108,7 +107,7 @@ public class DruidDataSourceDynamicConfig {
 
         // 设置控制台管理用户
         srb.addInitParameter("loginUsername", "root");
-        srb.addInitParameter("loginPassword", "Haier,123");
+        srb.addInitParameter("loginPassword", "root");
 
         // 是否可以重置数据
         srb.addInitParameter("resetEnable", "false");
