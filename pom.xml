@@ -14,6 +14,7 @@
         <module>RuleEngine</module>
         <module>ParamGroupValidated</module>
         <module>DynamicDataSource</module>
+        <module>Undertow</module>
     </modules>
 
 
@@ -21,12 +22,12 @@
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <version-spring-boot-dependencies>3.1.5</version-spring-boot-dependencies>
-        <version-spring-boot-admin-dependencies>3.1.8</version-spring-boot-admin-dependencies>
+        <version-spring-boot-dependencies>3.2.2</version-spring-boot-dependencies>
+        <version-spring-boot-admin-dependencies>3.2.1</version-spring-boot-admin-dependencies>
         <version-lombok>1.18.30</version-lombok>
         <version-snakeyaml>2.0</version-snakeyaml>
         <version-fastjson2>2.0.42</version-fastjson2>
-        <version-hutool>5.8.24</version-hutool>
+        <version-hutool>5.8.25</version-hutool>
     </properties>
 
     <dependencies>
