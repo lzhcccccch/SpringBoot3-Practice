@@ -9,8 +9,8 @@
     </parent>
 
     <artifactId>RuleEngine</artifactId>
-    <name>EasyRuleDemo</name>
-    <description>基于EasyRule的Demo</description>
+    <name>RuleEngine</name>
+    <description>流程引擎的简单使用</description>
 
     <properties>
         <version-easy-rule>4.1.0</version-easy-rule>
@@ -49,6 +49,7 @@
             <version>${version-easy-rule}</version>
         </dependency>
 
+        <!-- commons-collections 版本引发的警告, 已是最新版本 -->
         <!-- https://mvnrepository.com/artifact/com.yomahub/liteflow-spring-boot-starter -->
         <dependency>
             <groupId>com.yomahub</groupId>

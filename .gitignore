@@ -33,3 +33,5 @@ build/
 .vscode/
 
 .fastRequest/
+mvnw
+mvnw.cmd
