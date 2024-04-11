@@ -15,6 +15,7 @@
         <module>ParamGroupValidated</module>
         <module>DynamicDataSource</module>
         <module>Undertow</module>
+        <module>SpringAI</module>
     </modules>
 
 

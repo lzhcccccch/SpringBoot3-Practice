@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: SpringAI
+  ai:
+    ollama:
+      # default url
+      base-url: http://127.0.0.1:11434
+      chat:
+        # module: https://ollama.com/library
+        model: gemma:2b
