@@ -93,7 +93,7 @@ public class ParamGroupValidatedController {
      * 测试 Service 字段校验
      */
     @PostMapping(value = "update2")
-    public void update2(String username) {
+    public void update2(@RequestParam(value = "username") String username) {
         this.paramGroupValidatedService.filedValidated(username);
         log.info("result {}", username);
     }

@@ -23,6 +23,20 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class ParamGroupValidatedServiceImpl implements IParamGroupValidatedService {
 
+    /*
+     * service 实现参数的校验:
+     * 1. 实现类上添加 @Validated 注解, 对该类进行参数校验
+     * 2. 在接口方法的参数上可以直接使用 @NotBlank/@Valid 等注解, 实现类上添加与否都可以
+     *
+     * 解释第 2 点:
+     * 如果不在接口的方法中添加注解, 则会报错: jakarta.validation.ConstraintDeclarationException: HV000151: A method overriding another method must not redefine the parameter constraint configuration,
+     *  but method ParamGroupValidatedServiceImpl#filedValidated(String) redefines the configuration of IParamGroupValidatedService#filedValidated(String).
+     * 原因: 这个错误是由于在重写方法时改变了参数的约束配置导致的。
+     *  在你的代码中，ParamGroupValidatedServiceImpl 类中的 filedValidated 方法重写了 IParamGroupValidatedService 中的同名方法，
+     *  但是改变了参数的约束配置，这违反了 Hibernate Validator 的规则。
+     *  为了解决这个问题，你需要确保在重写方法时保持参数的约束配置不变。如果需要改变约束配置，你需要在接口或父类中修改方法的注解，而不是在重写的方法中修改。
+     */
+
     /**
      * 在方法的参数上可以直接使用 @NotBlank 等注解
      */
@@ -34,7 +48,6 @@ public class ParamGroupValidatedServiceImpl implements IParamGroupValidatedServi
     /**
      * 不分组校验
      * 在方法上使用 @Valid 注解, 采用默认分组(实体也不指定分组)
-     * 注意:接口中方法参数必须要加 @Valid 注解; 实现类中可加可不加
      *
      * @param paramGroupValidatedReq param
      * @return: void
@@ -49,7 +62,6 @@ public class ParamGroupValidatedServiceImpl implements IParamGroupValidatedServi
     /**
      * 分组校验
      * 在不分组校验的基础上对方法添加使用 @Validated 注解, 并指定分组
-     * 注意:接口中方法参数必须要加 @Valid 注解; @Validated 可在接口中也可在实现类中; 不能只在实现类中添加两个注解
      *
      * @param paramGroupValidatedReq param
      * @return: void
